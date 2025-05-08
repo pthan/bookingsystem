@@ -1,0 +1,157 @@
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
+--
+-- Host: localhost    Database: bookingsystem
+-- ------------------------------------------------------
+-- Server version	8.0.41
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Dumping data for table `booking`
+--
+
+LOCK TABLES `booking` WRITE;
+/*!40000 ALTER TABLE `booking` DISABLE KEYS */;
+INSERT INTO `booking` VALUES (1,'Success',9,'2025-05-08 16:38:41.812548',15,'330cf60a-4e70-43f3-b5c5-733add41ffee','Active',NULL,NULL,1,9);
+/*!40000 ALTER TABLE `booking` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `booking_package_usage`
+--
+
+LOCK TABLES `booking_package_usage` WRITE;
+/*!40000 ALTER TABLE `booking_package_usage` DISABLE KEYS */;
+INSERT INTO `booking_package_usage` VALUES (5,1,10,1,3),(6,1,5,1,4);
+/*!40000 ALTER TABLE `booking_package_usage` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `class_schedule`
+--
+
+LOCK TABLES `class_schedule` WRITE;
+/*!40000 ALTER TABLE `class_schedule` DISABLE KEYS */;
+INSERT INTO `class_schedule` VALUES (1,2,0,7,'2025-05-09 09:43:02.171486','2025-05-09 09:41:54.095000','3fa4064f-dcb1-49e7-8668-67a2b54ad6d9','2025-05-08 09:41:54.095000','Active',NULL,NULL,0,1),(2,2,0,7,'2025-05-09 09:55:37.013039','2025-05-08 17:30:00.000000','e64b4f94-df1f-488a-9be5-8a56664060da','2025-05-07 17:30:00.000000','Active',NULL,NULL,0,2),(3,1,0,7,'2025-05-09 10:59:46.326937','2025-05-08 17:30:00.000000','47bbde04-80f0-484c-8034-2c1ff0c606e1','2025-05-07 17:30:00.000000','Active',NULL,NULL,0,3),(4,1,0,7,'2025-05-10 11:01:21.191890','2025-05-08 17:30:00.000000','6a64612f-6de2-45e5-b9f4-996e15051b16','2025-05-07 17:30:00.000000','Active',NULL,NULL,0,3),(5,1,0,7,'2025-05-10 11:04:27.470114','2025-05-08 17:30:00.000000','38d517ed-e370-42b4-9e89-1c7053307b5f','2025-05-07 17:30:00.000000','Active',NULL,NULL,0,2),(6,1,0,7,'2025-05-07 11:17:48.807685','2025-05-08 17:30:00.000000','bc7c59da-3bd2-48b2-b61d-a33daddca917','2025-05-07 17:30:00.000000','Active',NULL,NULL,0,3),(7,2,0,7,'2025-05-08 12:29:13.243678','2025-05-16 17:30:00.000000','fd595334-f934-4429-b09b-3d06f31f7a7c','2025-05-11 17:30:00.000000','Active',NULL,NULL,0,2);
+/*!40000 ALTER TABLE `class_schedule` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `class_schedule_detail`
+--
+
+LOCK TABLES `class_schedule_detail` WRITE;
+/*!40000 ALTER TABLE `class_schedule_detail` DISABLE KEYS */;
+INSERT INTO `class_schedule_detail` VALUES (1,7,'2025-05-08 09:43:02.171486','2f4fd2bb-6069-4fbd-99c0-735de19362d1','WED','11:00','10:00','Active',NULL,NULL,1),(2,7,'2025-05-08 09:43:02.171486','105b61f1-8d22-479e-b1ae-eba004250161','THUR','12:00','11:00','Active',NULL,NULL,1),(3,7,'2025-05-08 09:55:37.014141','36e9065a-e42f-407e-bf38-5066248aee73','Mon','11:00','10:00','Active',NULL,NULL,2),(4,7,'2025-05-08 10:59:46.326937','f5f8721a-6bc2-4a9a-ae64-89f6e817feec','Mon','11:00','10:00','Active',NULL,NULL,3),(5,7,'2025-05-08 11:01:21.191890','a9024966-9c0c-451e-abcf-1b763bd5213d','Mon','11:00','10:00','Active',NULL,NULL,4),(6,7,'2025-05-08 11:04:27.470114','2afc150f-a0a8-4119-9e0f-a3e9c07f0b0b','Tue','11:00','10:00','Active',NULL,NULL,5),(7,7,'2025-05-08 11:17:48.807685','43ed8109-a510-4667-a281-be1c3bcb2650','Wed','11:00','10:00','Active',NULL,NULL,6),(8,7,'2025-05-08 12:29:13.243678','26ed27fe-98d8-41ec-8591-3a27d64db765','Sat','12:00 AM','10:00 AM','Active',NULL,NULL,7),(9,7,'2025-05-08 12:29:13.244706','66970542-0618-460a-8e2e-9b0b25ecbf05','Sun','12:00 AM','10:00 AM','Active',NULL,NULL,7);
+/*!40000 ALTER TABLE `class_schedule_detail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `classinfo`
+--
+
+LOCK TABLES `classinfo` WRITE;
+/*!40000 ALTER TABLE `classinfo` DISABLE KEYS */;
+INSERT INTO `classinfo` VALUES (1,'Myanmar Yoga Class',7,'2025-05-08 08:34:11.752371','good',30,'b0ac56f2-a8e9-45b3-999b-867e818d0bf1',15,'Active',NULL,NULL,1),(2,'SGD Yoga Class',7,'2025-05-08 08:36:58.974053','string',20,'c4989af5-b520-441c-ac09-b694a33fbf2b',10,'Active',NULL,NULL,2),(3,'Myanmar Yacht Class',7,'2025-05-08 08:43:16.363573','string',10,'a717fd66-c2a3-47d8-8c1e-60a21a1990a2',5,'Active',NULL,NULL,1),(4,'SGD class',7,'2025-05-08 09:11:09.127894',NULL,1,'df6be25c-b079-430e-a19f-fdcc481510d8',1,'Active',NULL,NULL,2),(5,'sgd 1',7,'2025-05-08 09:13:56.764855','nothing',1,'bb55a8e8-fc9d-4514-9512-98312ad248a7',1,'Active',NULL,NULL,1);
+/*!40000 ALTER TABLE `classinfo` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `country`
+--
+
+LOCK TABLES `country` WRITE;
+/*!40000 ALTER TABLE `country` DISABLE KEYS */;
+INSERT INTO `country` VALUES (1,'Myanmar',NULL,'2024-08-13 16:59:45.735547','989d52fd-6f74-4df6-bd79-e0cf8d5d9c26','Active',NULL,NULL),(2,'Singapore',NULL,'2024-08-13 16:59:45.776389','ea8921e4-b040-4bc8-8480-f29581df7e9e','Active',NULL,NULL);
+/*!40000 ALTER TABLE `country` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `credit_package`
+--
+
+LOCK TABLES `credit_package` WRITE;
+/*!40000 ALTER TABLE `credit_package` DISABLE KEYS */;
+INSERT INTO `credit_package` VALUES (1,7,'2025-05-07 10:07:44.153590',10,2,'a48be189-41d3-4612-b1eb-05eaafea3940','test packagemm2',10,'Active',NULL,NULL,1),(2,7,'2025-05-07 10:08:53.976397',10,2,'72b2c1d1-d76c-4eac-a793-7d86a3148bd9','test packagemm2',10,'Active',NULL,NULL,2);
+/*!40000 ALTER TABLE `credit_package` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `package`
+--
+
+LOCK TABLES `package` WRITE;
+/*!40000 ALTER TABLE `package` DISABLE KEYS */;
+INSERT INTO `package` VALUES (1,NULL,'2024-08-13 17:01:45.779435',5,60,'4c96407e-8cfa-429c-a138-df9d8e548016','Basic MM Package',100000,'Active',NULL,NULL,1),(2,NULL,'2024-08-13 17:01:45.785436',20,90,'1dd395b1-a075-4ee0-b420-40414cd37337','Advance MM Package',200000,'Active',NULL,NULL,1),(4,NULL,'2024-08-13 17:01:45.793964',5,60,'b46f05ef-c9dd-4a3f-9e37-7c26803f2558','Basic Sg Package',10,'Active',NULL,NULL,2),(5,NULL,'2024-08-13 17:01:45.797226',50,90,'37b08313-7c98-4eb4-b8fe-a075e7ab91fe','Advance SG Package',20,'Active',NULL,NULL,2),(10,NULL,'2024-08-13 17:01:47.508316',50,2,'f89c320e-0ce3-4a6c-a1fe-62f88d5c0418','Flash SG Package',20,'Active',NULL,NULL,2);
+/*!40000 ALTER TABLE `package` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `permission`
+--
+
+LOCK TABLES `permission` WRITE;
+/*!40000 ALTER TABLE `permission` DISABLE KEYS */;
+INSERT INTO `permission` VALUES (1,NULL,'2025-05-07 17:38:02.664476','e9f1d30f-d4bf-4f3b-a709-b8f5ee110156','USER_READ','Active',NULL,NULL),(2,NULL,'2025-05-07 17:38:02.664476','93f8e990-2eda-439e-812b-bde16dfef30b','USER_WRITE','Active',NULL,NULL),(3,NULL,'2025-05-07 17:38:02.664476','34fb1f74-0c7d-4442-84b3-2569d1afb765','ADMIN_READ','Active',NULL,NULL),(4,NULL,'2025-05-07 17:38:02.664476','fad1d2f4-b5b0-4ac9-9130-52688da503d3','ADMIN_WRITE','Active',NULL,NULL);
+/*!40000 ALTER TABLE `permission` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `purchase_credit_package`
+--
+
+LOCK TABLES `purchase_credit_package` WRITE;
+/*!40000 ALTER TABLE `purchase_credit_package` DISABLE KEYS */;
+INSERT INTO `purchase_credit_package` VALUES (1,10,10,3,'2025-05-08 01:05:59.969565','2025-05-10 01:05:59.969565',2,'c413c397-b1e4-4567-b47f-a7b14bf36a16','PAID',10,'Active',NULL,NULL,1,6,NULL),(2,10,10,3,'2025-05-08 01:39:14.828743','2025-05-10 01:39:14.828743',2,'7f3a2381-fe71-428b-9fbe-cfd6a4478e2f','PAID',10,'Active',NULL,NULL,1,6,NULL),(3,10,10,9,'2025-05-08 15:59:42.922448','2025-05-10 15:59:42.922448',2,'1590c6d7-d9c5-4d8d-99d2-6061320d9842','PAID',0,'Active',NULL,NULL,1,9,NULL),(4,10,10,9,'2025-05-08 15:59:49.351743','2025-05-10 15:59:49.351743',2,'6a6862f8-888a-4a5b-8d9a-6ddf5ca9599b','PAID',5,'Active',NULL,NULL,1,9,NULL),(5,10,10,9,'2025-05-08 16:00:05.452279','2025-05-10 16:00:05.452279',2,'a0f90ac0-6b5a-4705-be4f-9c6e5b08d925','PAID',10,'Active',NULL,NULL,2,9,NULL);
+/*!40000 ALTER TABLE `purchase_credit_package` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `role`
+--
+
+LOCK TABLES `role` WRITE;
+/*!40000 ALTER TABLE `role` DISABLE KEYS */;
+INSERT INTO `role` VALUES (1,NULL,'2025-05-07 17:59:37.042893','b6e61271-8502-4c6e-89f3-041e983c4971','ROLE_USER','Active',NULL,NULL),(2,NULL,'2025-05-07 17:59:37.042893','40c45e84-ae25-41c8-8d47-b09f834a8b0a','ROLE_ADMIN','Active',NULL,NULL);
+/*!40000 ALTER TABLE `role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `rolepermission`
+--
+
+LOCK TABLES `rolepermission` WRITE;
+/*!40000 ALTER TABLE `rolepermission` DISABLE KEYS */;
+INSERT INTO `rolepermission` VALUES (1,NULL,'2025-05-07 17:59:37.450091','49c76053-df80-4ba4-ba7e-6c32536aed07','Active',NULL,NULL,1,1),(2,NULL,'2025-05-07 17:59:37.450091','f8fab04a-5d51-40a9-a0cf-e0c79aa300e8','Active',NULL,NULL,2,1),(3,NULL,'2025-05-07 17:59:37.450091','9d74755a-b185-438b-8811-a26ace5dd555','Active',NULL,NULL,3,2),(4,NULL,'2025-05-07 17:59:37.450091','1e2aca70-7cdc-4dbe-8854-6af3d4bdecc4','Active',NULL,NULL,4,2);
+/*!40000 ALTER TABLE `rolepermission` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (3,NULL,'2024-08-13 18:00:25.820449','pth1@gmail.com','5d6c50ab-a774-40fd-bafe-73bbf936382f','pth','$2a$10$02BQHxS0zNlqCg7eEsDOQepXsylBugiM1ka6aJaBmPP/8rmgpQKCy','Active',NULL,NULL,1,NULL,'pth'),(4,NULL,'2024-08-13 18:00:46.198465','pth2@gmail.com','a471711e-1b15-4ac7-ab67-454863077249','pth2','$2a$10$eN7jHiZD2zo.3LizEWcPKOvvN7mbozTzR5Cr78dXJd9re2mtJ9622','Active',NULL,NULL,1,NULL,NULL),(5,NULL,'2024-08-13 18:00:04.280530','pth3@gmail.com','70c46f78-8854-4521-b891-9a768f0988e0','pth3','$2a$10$8kS6pDTxTGNoTVHdrBaT3.Yx05wPJxpYJiyoEcoyONKEwbg7SKYYm','Active',NULL,NULL,1,NULL,NULL),(6,NULL,'2025-05-06 19:01:48.096932','pthan349@gmail.com','c89f509e-0f4b-4d35-a84e-00b422f6c99b','pth1','$2a$10$hd6iblhorggx4bO/5JM8Suq82I43kisg6vvI1h7snoMPaGlHwxUV.','Active',NULL,NULL,1,NULL,NULL),(7,NULL,'2025-05-07 08:56:14.366421','admin@gmail.com','7f27b129-7795-44f0-a90c-dde6f4b57c41','admin','$2a$10$4r4aIQ4qtLj2/e/W4x6Oq.R.Tl2wAvUOG5Twiix1jIq6iK5PcDbWS','Active',NULL,NULL,2,NULL,NULL),(8,NULL,'2025-05-07 09:33:38.469371','pth@test.com','6b047d33-2aed-426e-9ec4-bcb527bc26f3','pth1234','$2a$10$Q3wFIPXdHVEXd5TKlIj8hOR8SXchskHturIzcaMTYWEu3wilE3ODi','Active',NULL,NULL,1,NULL,NULL),(9,NULL,'2025-05-08 15:57:37.684889','testpth@gmail.com','a4d80be6-0eab-4915-a59c-7850d0f1f2c3','testpth','$2a$10$iMKCZDSuCL0sCvEZ//ILJ.E/WciYnHsQjxF1um6KJRscPg2GTHubK','Active',NULL,NULL,1,NULL,NULL);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-05-08 23:36:54
