@@ -15,9 +15,15 @@ import com.my.bookingsystem.schedule.service.BookingService;
 import com.my.bookingsystem.shared.exceptions.BusinessException;
 import com.my.bookingsystem.user.entity.User;
 import com.my.bookingsystem.user.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RAtomicLong;
+import org.redisson.api.RLock;
+import org.redisson.api.RSemaphore;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -25,27 +31,48 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import static com.my.bookingsystem.config.Constants.CONCURRENT_USER;
+import static com.my.bookingsystem.config.Constants.COUNT_KEY_PREFIX;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 
+
     private final ClassScheduleRepository classScheduleRepo;
     private final PurchaseCreditPackageRepository packageRepo;
     private final BookingRepository bookingRepo;
     private final BookingPackageUsageRepository usageRepo;
     private final UserRepository userRepository;
+    private  final  RedissonClient redissonClient;
 
     @Override
     public ResponseFormat  makeBooking(Long scheduleId, Long userId) {
         ResponseFormat responseFormat=null;
+        String errorMessage="";
+        String lockKey =Constants.LOCK_KEY_PREFIX+ scheduleId;
+        RLock lock = redissonClient.getLock(lockKey);
+        try {
+            boolean locked = lock.tryLock(5, 10, TimeUnit.SECONDS);
+            if (!locked) {
+                throw new BusinessException("System busy. Try again.");
+            }
+            ClassSchedule schedule = classScheduleRepo.findById(scheduleId)
+                    .orElseThrow(() -> new EntityNotFoundException("Schedule not found"));
+
+            int effectiveConcurrency = Math.min(CONCURRENT_USER, schedule.getAvailableSlots());
+
+            RAtomicLong counter = redissonClient.getAtomicLong(COUNT_KEY_PREFIX + scheduleId);
+            if (counter.incrementAndGet() > effectiveConcurrency) {
+                counter.decrementAndGet();
+                throw new BusinessException("Class is full.");
+            }
         try{
         User user = userRepository.findById(userId)
                     .orElseThrow(() -> new EntityNotFoundException("Class not found"));
-
-        ClassSchedule schedule = classScheduleRepo.findById(scheduleId)
-                .orElseThrow(() -> new EntityNotFoundException("Class not found"));
 
         int requiredCredit = schedule.getClassInfo().getRequiredCredit();
         Long classCountryId = schedule.getClassInfo().getCountry().getId();
@@ -56,11 +83,13 @@ public class BookingServiceImpl implements BookingService {
 
         int totalAvailable = packages.stream().mapToInt(PurchaseCreditPackage::getRemainingCredit).sum();
         if (totalAvailable < requiredCredit) {
-            throw new BusinessException("Insufficient credits across all packages.");
+            errorMessage="Insufficient credits across all packages.";
+            throw new BusinessException(errorMessage);
         }
 
         if (schedule.getBookingCount() >= schedule.getAvailableSlots()) {
-            throw new BusinessException("Class is full. You’ve been added to waitlist.");
+            errorMessage="Class is full. You should add in waitlist.";
+            throw new BusinessException(errorMessage);
         }
 
         Booking booking = new Booking();
@@ -69,7 +98,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setUser(user);
         booking.setCredit(requiredCredit);
         booking.setCreatedBy(userId);
-        booking.setBookingStatus("Success");
+        booking.setBookingStatus(Constants.BOOKING_SUCCESS_STATUS);
         booking.setStatus(Constants.STATUS_ACTIVE);
         booking.setCreatedOn(ZonedDateTime.now());
 
@@ -95,30 +124,48 @@ public class BookingServiceImpl implements BookingService {
         usageRepo.saveAll(usageList);
 
         packageRepo.saveAll(packages);
+        schedule.setBookingCount(schedule.getBookingCount() + 1);
+        classScheduleRepo.save(schedule);
+
             Booking fullBooking = bookingRepo.findByIdWithPackages(booking.getId())
                     .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
 
-// ✅ Now safe to map with mapper
             BookingResponse response = mapToBookingResponse(fullBooking);
-     //   BookingResponse response = bookingMapper.toBookingResponse(booking);
         responseFormat=new ResponseFormat();
         responseFormat.setSuccess(true);
         responseFormat.setMessage(Optional.of("Make Booking success!"));
         responseFormat.setData(Optional.of(response));
+
         }catch (Exception e){
-            e.printStackTrace();
-          log.info("Error at processing ",e.getMessage());
             return ResponseFormat
                     .failedResponse()
                     .message("Processing failed, please try again later!")
-                    .data("Processing failed, please try again later!")
+                    .data(errorMessage)
                     .build();
         }
+        finally {
+            counter.decrementAndGet();
+        }
+
+        } catch (InterruptedException e) {
+
+        } finally {
+            if (lock.isHeldByCurrentThread()) {
+                lock.unlock();
+            }
+        }
+
+
+
+
+
         return responseFormat;
     }
     private BookingResponse mapToBookingResponse(Booking booking) {
         BookingResponse response = new BookingResponse();
         response.setBookingId(booking.getId());
+        response.setStatus(booking.getBookingStatus());
+        response.setTotalCreditUsed(booking.getCredit());
 
         List<BookingResponse.UsedPackageDetail> usageDetails = new ArrayList<>();
 

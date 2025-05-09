@@ -191,6 +191,7 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
             schedule.setStartDate(startDate);
             schedule.setEndDate(endDate);
             schedule.setAvailableSlots(request.getAvailableSlots());
+
             schedule.setBookingCount(0);
             schedule.setWaitingCount(0);
             schedule.setStatus(Constants.STATUS_ACTIVE);
@@ -219,11 +220,6 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
             responseFormat.setSuccess(true);
             responseFormat.setMessage(Optional.of("Class schedule created successfully"));
              ClassScheduleItem responseItems= scheduleMapper.toClassScheduleItem(schedule);
-//             responseItems.setClassName(classInfo.getClassName());
-//             responseItems.setCountry(country.getCountryName());
-//             responseItems.setDuration(classInfo.getDuration().toString());
-//             responseItems.setCredit(classInfo.getRequiredCredit());
-//             responseItems.setClassDetailSchedule(scheduleMapper.toDetailItemsList(schedule.getDetails()));
             responseFormat.setData(Optional.of(responseItems));
 
 
