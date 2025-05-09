@@ -10,11 +10,9 @@ import java.util.List;
 @Data
 public class ClassScheduleCreateRequest {
     private Long classInfoId;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endDate;
+    private ZonedDateTime startDate;
+    private ZonedDateTime endDate;
     private Integer availableSlots;
     private List<ScheduleDetailRequest> details;
 

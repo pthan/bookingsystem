@@ -43,6 +43,9 @@ public class ClassSchedule {
     @Column(name = "available_slots", nullable = false)
     private Integer availableSlots;
 
+    @Column(name="schedule_class_status",nullable = false)
+    private String scheduleClassStatus;
+
     @Column(nullable = false)
     private String status;
 

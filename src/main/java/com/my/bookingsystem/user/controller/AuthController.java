@@ -18,8 +18,6 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @Autowired
-    UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRequest loginRequest) throws Exception {
@@ -27,10 +25,5 @@ public class AuthController {
         ResponseFormat format = authService.authenticateUser( loginRequest );
         return new ResponseEntity<>( format, HttpStatus.OK);
     }
-    @PostMapping("/register")
-    public ResponseEntity<ResponseFormat> createAdmin(@RequestBody UserRequest userRequest){
-        System.out.println("testing");
-        ResponseFormat format = userService.saveUser( userRequest , Role.ROLE_ADMIN );
-        return new ResponseEntity<>( null, HttpStatus.OK);
-    }
+
 }

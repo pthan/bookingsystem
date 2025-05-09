@@ -11,4 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class PurchasePackageRequest {
     private Long packageId;
     private Double amount;
+    private String cardNumber;
+    private String cvc;
+    private String expiryDate;
+    private String email;
 }

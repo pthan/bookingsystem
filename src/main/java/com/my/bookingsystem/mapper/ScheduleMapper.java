@@ -2,18 +2,16 @@ package com.my.bookingsystem.mapper;
 
 import com.my.bookingsystem.purchasepackage.entity.Country;
 import com.my.bookingsystem.schedule.dto.request.ClassInfoRequest;
-import com.my.bookingsystem.schedule.dto.response.ClassInfoResponse;
-import com.my.bookingsystem.schedule.dto.response.ClassScheduleDetailItem;
-import com.my.bookingsystem.schedule.dto.response.ClassScheduleItem;
-import com.my.bookingsystem.schedule.entity.ClassInfo;
-import com.my.bookingsystem.schedule.entity.ClassSchedule;
-import com.my.bookingsystem.schedule.entity.ClassScheduleDetail;
+import com.my.bookingsystem.schedule.dto.response.*;
+import com.my.bookingsystem.schedule.entity.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -28,6 +26,7 @@ public interface ScheduleMapper {
     @Mapping(source = "classInfo.requiredCredit", target = "credit")
     @Mapping(source = "details", target = "classDetailSchedule")
     @Mapping(target = "duration", expression = "java(calculateDuration(schedule))")
+    @Mapping(source = "id", target="scheduleId")
     ClassScheduleItem toClassScheduleItem(ClassSchedule schedule);
 
     List<ClassScheduleItem> toClassScheduleItems(List<ClassSchedule> schedules);

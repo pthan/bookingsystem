@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class ClassScheduleItem {
+    private long scheduleId;
     private String country;
     private String className;
     private int credit;

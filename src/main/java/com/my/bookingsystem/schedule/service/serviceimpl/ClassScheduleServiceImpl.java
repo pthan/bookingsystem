@@ -37,6 +37,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.my.bookingsystem.config.Constants.STATUS_ACTIVE;
+import static com.my.bookingsystem.config.Constants.STATUS_PROGRESS;
+
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -73,7 +76,7 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
             spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("startDate"), todayStart));
 
             boolean hasKeyword = request.getKeyword() != null && !request.getKeyword().isBlank();
-            boolean hasCountry= request.getCountryId() != null ;
+            boolean hasCountry = request.getCountryId() != null;
 
             boolean hasDateRange = request.getFromDate() != null && request.getToDate() != null;
 
@@ -186,15 +189,16 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
             ClassSchedule schedule = new ClassSchedule();
             schedule.setClassInfo(classInfo);
             schedule.setGuid(UUID.randomUUID().toString());
-            ZonedDateTime startDate = request.getStartDate().atStartOfDay(ZoneId.systemDefault());
-            ZonedDateTime endDate = request.getEndDate().atTime(LocalTime.MAX).atZone(ZoneId.systemDefault());
-            schedule.setStartDate(startDate);
-            schedule.setEndDate(endDate);
+//            ZonedDateTime startDate = request.getStartDate().atStartOfDay(ZoneId.systemDefault());
+//            ZonedDateTime endDate = request.getEndDate().atTime(LocalTime.MAX).atZone(ZoneId.systemDefault());
+            schedule.setStartDate(request.getStartDate());
+            schedule.setEndDate(request.getEndDate());
             schedule.setAvailableSlots(request.getAvailableSlots());
 
             schedule.setBookingCount(0);
             schedule.setWaitingCount(0);
-            schedule.setStatus(Constants.STATUS_ACTIVE);
+            schedule.setStatus(STATUS_ACTIVE);
+            schedule.setScheduleClassStatus(STATUS_PROGRESS);
             schedule.setCreatedBy(userId);
             schedule.setCreatedOn(ZonedDateTime.now());
 
@@ -206,7 +210,7 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
                 detail.setSessionDay(d.getSessionDay());
                 detail.setSessionStartTime(d.getStartTime());
                 detail.setSessionEndTime(d.getEndTime());
-                detail.setStatus(Constants.STATUS_ACTIVE);
+                detail.setStatus(STATUS_ACTIVE);
                 detail.setCreatedBy(userId);
                 detail.setCreatedOn(ZonedDateTime.now());
                 detailList.add(detail);

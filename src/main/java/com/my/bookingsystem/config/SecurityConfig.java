@@ -36,8 +36,9 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
                             "/entry/country",
                             "/user/**",
                             "/auth/login",
-                            "/auth/register",
+                            "/admin/register",
                             "package/list",
+                            "/booking/refundAll",
                             "schedule/availableclasses",
                             // Swagger UI & OpenAPI
                             "/swagger-ui/**",

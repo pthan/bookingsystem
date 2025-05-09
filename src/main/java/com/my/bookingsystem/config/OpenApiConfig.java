@@ -58,7 +58,9 @@ public class OpenApiConfig {
         return GroupedOpenApi.builder()
                 .group("booking-system")
                 // match all your controller paths here:
-                .pathsToMatch("/package/**","/purchase/**","/booking/**","/classinfo/**","/schedule/**", "/entry/**", "/user/**", "/auth/**")
+                .pathsToMatch("/package/**","/purchase/**","/booking/**","/classinfo/**",
+                        "/admin/**",
+                        "/schedule/**", "/entry/**", "/user/**", "/auth/**")
                 .addOperationCustomizer(globalResponseCustomizer)
                 .build();
     }

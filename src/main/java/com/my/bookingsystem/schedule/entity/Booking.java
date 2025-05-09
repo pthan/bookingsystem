@@ -38,6 +38,9 @@ public class Booking {
     @Column(nullable = false)
     private String bookingStatus; // e.g., BOOKED, CANCELED, WAITLIST
 
+    @Column(name="payment_status",nullable = false)
+    private String paymentStatus;
+
     @Column(nullable = false)
     private String status;
 

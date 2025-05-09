@@ -35,7 +35,8 @@ public class ClassScheduleController {
         return new ResponseEntity<>(responseFormat, HttpStatus.CREATED);
     }
     @Operation(summary = "Create a new class schedule", security = @SecurityRequirement(name = "BearerAuth"))
-    @PostMapping("/createclass")
+    @PostMapping("/class")
+    @PreAuthorize("hasAuthority('ADMIN_WRITE')")
     public ResponseEntity<ResponseFormat> createClassSchedule(
             @RequestBody @Valid ClassScheduleCreateRequest request,
             @AuthenticationPrincipal CustomUserDetails user) {

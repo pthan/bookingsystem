@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class SearchRequest {
-    private String guid;
     private String keyword;
     private Integer first;
     private Integer max;

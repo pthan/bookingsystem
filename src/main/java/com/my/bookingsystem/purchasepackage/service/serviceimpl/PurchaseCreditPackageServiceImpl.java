@@ -2,6 +2,8 @@ package com.my.bookingsystem.purchasepackage.service.serviceimpl;
 
 import com.my.bookingsystem.domain.response.ResponseFormat;
 import com.my.bookingsystem.mapper.PurchasePackageMapper;
+import com.my.bookingsystem.mock.service.MockEmailService;
+import com.my.bookingsystem.mock.service.MockPaymentService;
 import com.my.bookingsystem.purchasepackage.dto.request.PurchasePackageRequest;
 import com.my.bookingsystem.purchasepackage.dto.request.UserCreditPackageSearchRequest;
 import com.my.bookingsystem.purchasepackage.dto.response.PurchasePackageListResponse;
@@ -11,6 +13,7 @@ import com.my.bookingsystem.purchasepackage.entity.PurchaseCreditPackage;
 import com.my.bookingsystem.purchasepackage.repository.PackageRepository;
 import com.my.bookingsystem.purchasepackage.repository.PurchaseCreditPackageRepository;
 import com.my.bookingsystem.purchasepackage.service.PurchaseCreditPackageService;
+import com.my.bookingsystem.shared.exceptions.BusinessException;
 import com.my.bookingsystem.user.entity.User;
 import com.my.bookingsystem.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -41,17 +44,29 @@ public class PurchaseCreditPackageServiceImpl implements PurchaseCreditPackageSe
     private final PackageRepository packageRepository;
     private  final UserRepository userRepository;
     private  final PurchasePackageMapper purchasePackageMapper;
+    private final MockPaymentService mockPaymentService;
+    private final MockEmailService mockEmailService;
 
     @Override
     public ResponseFormat purchaseCreditPackage(PurchasePackageRequest req, Long userId) {
         ResponseFormat responseFormat=null;
+        User user=new User();
         log.info("purchaseCreditPackage() called by user={} with packageId={} amount={}", userId, req.getPackageId(), req.getAmount());
         try {
         CreditPackage creditPackage = packageRepository.findById(req.getPackageId())
                 .orElseThrow(() -> new EntityNotFoundException("Package not found"));
 
-        User user = userRepository.findById(userId)
+        user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        boolean validCard = mockPaymentService.addPaymentCard(req.getCardNumber(), req.getCvc(), req.getExpiryDate());
+            if (!validCard) {
+                throw new BusinessException("Invalid payment information.");
+            }
+        boolean charged = mockPaymentService.chargePayment(userId.toString(), creditPackage.getPrice());
+            if (!charged) {
+                throw new BusinessException("Payment failed.");
+            }
 
         PurchaseCreditPackage purchaseCreditPackage = new PurchaseCreditPackage();
         purchaseCreditPackage.setGuid(UUID.randomUUID().toString());
@@ -85,58 +100,13 @@ public class PurchaseCreditPackageServiceImpl implements PurchaseCreditPackageSe
                     .data("Processing failed, please try again later!")
                     .build();
         }
+        boolean sent = mockEmailService.sendVerificationEmail(req.getEmail(), user.getName(),"Purchase Confirm","Purchase success");
+        if (!sent) {
+            log.warn("Email confirmation failed to send.");
+        }
+
         return  responseFormat;
     }
-//
-//    @Override
-//    public ResponseFormat listUserCreditPackages(UserCreditPackageSearchRequest request , Long userId) {
-//        log.info("Get Credit Package Info with request info:{}",request);
-//        ResponseFormat responseFormat=null;
-//        PurchasePackageListResponse response = PurchasePackageListResponse.builder()
-//                .items(new ArrayList<>())
-//                .totalRecords(0)
-//                .build();
-//        try {
-//
-//            if( request.getFirst() == null)
-//                request.setFirst(0);
-//            if( request.getMax() == null)
-//                request.setMax(Integer.MAX_VALUE);
-//            if( request.getOrderBy() == null)
-//                request.setOrderBy("id");
-//            if( request.getAsc() == null)
-//                request.setAsc(false);
-//            if( request.getKeyword() == null)
-//                request.setKeyword("");
-//            Sort sort= Sort.by(request.getOrderBy()).ascending();
-//            Pageable pageable = PageRequest.of(  request.getFirst(), request.getMax(), sort );
-//            List<PurchaseCreditPackage> listPurchaseCreditPackage = purchaseCreditPackageRepository.findByUserIdOrderByCreatedOnDesc(userId);
-//            long totalRecords = listPurchaseCreditPackage.size();
-//            for (PurchaseCreditPackage creditPackage : listPurchaseCreditPackage) {
-//                PurchasePackageResponse item = new PurchasePackageResponse();
-//                item.setId(creditPackage.getId());
-//                item.setPackageName(creditPackage.getCreditPackage().getPackageName());
-//                item.setAvailableCredit(creditPackage.getAvailableCredit());
-//                item.setRemainingCredit(creditPackage.getRemainingCredit());
-//                item.setExpireDate(creditPackage.getExpireDate());
-//                item.setStatus(creditPackage.getStatus());
-//                response.getItems().add(item);
-//            }
-//            responseFormat = new ResponseFormat();
-//            responseFormat.setSuccess(true);
-//            responseFormat.setMessage( Optional.of("CreditPackage list successful") );
-//            responseFormat.setData( Optional.of(response) );
-//            log.info("Successfully fetching package list and found total {} records",totalRecords);
-//        }catch (Exception e){
-//            log.error("Error at fetching records  ",e);
-//            return ResponseFormat
-//                    .failedResponse()
-//                    .message("Processing failed, please try again later!")
-//                    .data("Processing failed, please try again later!")
-//                    .build();
-//        }
-//        return responseFormat;
-//    }
 public ResponseFormat listUserCreditPackages(UserCreditPackageSearchRequest request, Long userId) {
     log.info("listUserCreditPackages() called by user={} with request={} ", userId, request);
 
