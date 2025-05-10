@@ -13,7 +13,7 @@ import java.util.List;
 public interface PackageRepository extends JpaRepository<CreditPackage,Long> {
 
     @Query(
-            value = "SELECT p.id,p.credit, p.expire_in as expireIn, p.guid, p.package_name as packageName, p.price,c.country_name as countryName," +
+            value = "SELECT p.id as packageId,p.credit, p.expire_in as expireIn, p.guid, p.package_name as packageName, p.price,c.country_name as countryName," +
                     " p.status,c.id  FROM credit_package p INNER JOIN country c on c.id=p.country_id" +
                     "    WHERE c.status='Active' and p.status='Active' ",nativeQuery = true
     )
@@ -26,7 +26,7 @@ public interface PackageRepository extends JpaRepository<CreditPackage,Long> {
     )
     Long countPackage();
     @Query(
-            value = "SELECT p.id,p.credit, p.expire_in as expireIn, p.guid, p.package_name as packageName, p.price,c.country_name as countryName," +
+            value = "SELECT p.id as packageId,p.credit, p.expire_in as expireIn, p.guid, p.package_name as packageName, p.price,c.country_name as countryName," +
                     " p.status,c.id  FROM credit_package p INNER JOIN country c on c.id=p.country_id" +
                     "    WHERE c.status='Active' and p.status='Active' AND" +
                     " (c.country_name=:country or p.package_name LIKE :packageName )",nativeQuery = true
@@ -46,7 +46,7 @@ public interface PackageRepository extends JpaRepository<CreditPackage,Long> {
 
     interface IPackage
     {
-        long getId();
+        long getPackageId();
         String getPackageName();
         int getCredit();
         int getExpireIn();

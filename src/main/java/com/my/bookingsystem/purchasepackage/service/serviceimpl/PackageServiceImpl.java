@@ -72,7 +72,7 @@ public class PackageServiceImpl implements PackageService {
             packageDataList.forEach(iPackage->{
 
                 PackageItem pd=new PackageItem();
-                pd.setId(iPackage.getId());
+                pd.setId(iPackage.getPackageId());
                 pd.setPackageName(iPackage.getPackageName());
                 pd.setCredit(iPackage.getCredit());
                 pd.setGuid(iPackage.getGuid());

@@ -278,6 +278,7 @@ public class BookingServiceImpl implements BookingService {
         if (waitlistEntryOpt.isPresent()) {
             Booking waitlistBooking = waitlistEntryOpt.get();
             waitlistBooking.setBookingStatus(BOOKING_SUCCESS_STATUS);
+            waitlistBooking.setPaymentStatus(PAYMENT_PAID_STATUS);
             waitlistBooking.setUpdatedOn(ZonedDateTime.now());
             waitlistBooking.setUpdatedBy(userId);
             bookingRepo.save(waitlistBooking);
@@ -299,8 +300,10 @@ public class BookingServiceImpl implements BookingService {
                     .totalRecords(0)
                     .build();
 
-            int page = request.getFirst() == null ? 0 : request.getFirst();
-            int size = request.getMax() == null ? Integer.MAX_VALUE : request.getMax();
+            int size = (request.getMax() == null || request.getMax() <= 0) ? 20 : request.getMax();
+            int offset = (request.getFirst() == null || request.getFirst() < 0) ? 0 : request.getFirst();
+            int page = offset / size;
+
             String orderBy = request.getOrderBy() == null ? "createdOn" : request.getOrderBy();
             boolean asc = Boolean.TRUE.equals(request.getAsc());
 

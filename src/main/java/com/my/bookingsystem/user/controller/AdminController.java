@@ -20,7 +20,7 @@ public class AdminController {
 
     @PostMapping("/register")
     public ResponseEntity<ResponseFormat> createAdmin(@RequestBody UserRequest userRequest){
-        ResponseFormat format = userService.saveUser( userRequest , Role.ROLE_ADMIN );
-        return new ResponseEntity<>( null, HttpStatus.OK);
+        ResponseFormat responseFormat = userService.saveUser( userRequest , Role.ROLE_ADMIN );
+        return new ResponseEntity<>( responseFormat, HttpStatus.OK);
     }
 }

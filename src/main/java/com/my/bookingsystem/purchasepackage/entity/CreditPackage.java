@@ -46,8 +46,6 @@ public class CreditPackage {
     @Column(name = "created_by",nullable = true)
     private  Long createdBy;
 
-
-
     @Column(name = "status", nullable = false)
     private String status;
 }

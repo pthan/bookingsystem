@@ -83,8 +83,10 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
             // Apply additional filters only if provided
             if (hasKeyword) {
                 String pattern = "%" + request.getKeyword().toLowerCase() + "%";
-                spec = spec.and((root, query, cb) ->
-                        cb.like(cb.lower(root.get("classInfo").get("className")), pattern));
+                spec = spec.and((root, query, cb) ->{
+                      query.distinct(true);
+                      return  cb.like(cb.lower(root.get("classInfo").get("className")), pattern);
+                });
             }
             if (hasCountry) {
                 spec = spec.and((root, query, cb) ->
@@ -125,58 +127,6 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
 
         return responseFormat;
     }
-
-//    public ResponseFormat listSchedules(ClassScheduleSearchRequest request) {
-//        ResponseFormat responseFormat;
-//        try{
-//            ClassScheduleListResponse response = ClassScheduleListResponse.builder()
-//                    .items(new ArrayList<>())
-//                    .totalRecords(0)
-//                    .build();
-//        int page = request.getFirst() == null ? 0 : request.getFirst();
-//        int size = request.getMax() == null ? Integer.MAX_VALUE : request.getMax();
-//        String orderBy = request.getOrderBy() == null ? "startDate" : request.getOrderBy();
-//        boolean asc = Boolean.TRUE.equals(request.getAsc());
-//
-//        Pageable pageable = PageRequest.of(page, size, asc ? Sort.by(orderBy).ascending() : Sort.by(orderBy).descending());
-//
-//        Specification<ClassSchedule> spec = Specification.where(null);
-//
-//        if (request.getKeyword() != null && !request.getKeyword().isBlank()) {
-//            spec = spec.and((root, query, cb) -> cb.equal(root.get("classInfo").get("country"), request.getKeyword()));
-//        }
-//
-//        if (request.getFromDate() != null && request.getToDate() != null) {
-//            ZonedDateTime from = request.getFromDate().atStartOfDay(ZoneId.systemDefault());
-//            ZonedDateTime to = request.getToDate().atTime(LocalTime.MAX).atZone(ZoneId.systemDefault());
-//
-//            spec = spec.and((root, query, cb) -> cb.and(
-//                    cb.lessThanOrEqualTo(root.get("endDate"), to),
-//                    cb.greaterThanOrEqualTo(root.get("startDate"), from)
-//            ));
-//        }
-//
-//        Page<ClassSchedule> pageResult = classScheduleRepository.findAll(spec, pageable);
-//        List<ClassScheduleItem> items = scheduleMapper.toClassScheduleItems(pageResult.getContent());
-//
-//
-//        responseFormat = new ResponseFormat();
-//        response.setItems(items);
-//        responseFormat.setSuccess(true);
-//        responseFormat.setMessage( Optional.of("CreditPackage list successful") );
-//        responseFormat.setData( Optional.of(response) );
-//        response.setTotalRecords(pageResult.getTotalElements());
-//        log.info("Successfully fetching package list and found total {} records",pageResult.getTotalElements());
-//    }catch (Exception e){
-//        log.error("Error at fetching records  ",e);
-//        return ResponseFormat
-//                .failedResponse()
-//                .message("Processing failed, please try again later!")
-//                .data("Processing failed, please try again later!")
-//                .build();
-//    }
-//        return  responseFormat;
-//    }
 
     public ResponseFormat createClassSchedule(ClassScheduleCreateRequest request, Long userId) {
         ResponseFormat responseFormat = null;

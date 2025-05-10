@@ -33,8 +33,6 @@ public class CreditPackageController {
     )
     @PostMapping("/list")
     public ResponseEntity<ResponseFormat> viewPackage(@RequestBody CreditPackageSearchRequest packageSearchRequest){
-        System.out.println("♻️  createPackage() invoked");  // <<< and this
-
         ResponseFormat format = packageService.getPackageList(packageSearchRequest);
         return new ResponseEntity<>( format, HttpStatus.OK);
     }
